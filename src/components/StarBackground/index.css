@@ -1,0 +1,38 @@
+.stars .star:nth-child(1) {
+  animation-delay: -0.18s;
+}
+
+.stars .star:nth-child(2) {
+  animation-delay: -0.36s;
+}
+.stars .star:nth-child(3) {
+  animation-delay: -0.54s;
+}
+
+.star {
+  animation: sway 3s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes sway {
+  0%,
+  19% {
+    transform: scale(1.05) rotate(3deg);
+  }
+  20%,
+  39% {
+    transform: scale(1) rotate(-4deg);
+  }
+  40%,
+  59% {
+    transform: scale(1.2) rotate(7deg);
+  }
+  60%,
+  79% {
+    transform: scale(1.1) rotate(-5deg);
+  }
+  80%,
+  99% {
+    transform: scale(0.9) rotate(-1deg);
+  }
+}

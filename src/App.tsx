@@ -1,4 +1,6 @@
+import starAnimation from "@/assets/a.lottie"
 import { useGSAP } from "@gsap/react"
+import { DotLottieReact } from "@lottiefiles/dotlottie-react"
 import gsap from "gsap"
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -6,18 +8,14 @@ import { TextPlugin } from "gsap/TextPlugin"
 import { useRef } from "react"
 import { AboutSection } from "./AboutSection"
 import "./App.css"
-import StarSvg1 from "./assets/star-1.svg?react"
-import StarSvg2 from "./assets/star-2.svg?react"
-import StarSvg3 from "./assets/star-3.svg?react"
-import StarSvg4 from "./assets/star-4.svg?react"
 import { Header } from "./components/Header"
+import { StarBackground } from "./components/StarBackground"
 import { ExperienceSection } from "./ExperienceSection"
 import { HeroSection } from "./HeroSection"
 import { ProjectSection } from "./ProjectSection"
 
 gsap.registerPlugin(useGSAP, TextPlugin, DrawSVGPlugin, ScrollTrigger)
 
-// todo star scale rotate infinite
 // todo hero vertical scroll -> about -> pin -> horizion scroll -> exp -> horizion scroll -> project
 
 function App() {
@@ -37,12 +35,11 @@ function App() {
       const t1 = gsap.timeline()
 
       t1.to(".paragraph-1", {
-        duration: 0.3,
         text: "Thinking Deeply",
         ease: "none",
       })
         .to(".paragraph-2", {
-          duration: 0.4,
+          duration: 0.8,
           text: "Executing Clearly.",
           ease: "none",
         })
@@ -101,22 +98,21 @@ function App() {
           },
           "<"
         )
-        .to(
-          ".star",
-          {
-            scale: 1.3, // 輕柔呼吸
-            rotation: "+=360", // 一圈優雅旋轉
-            duration: 2,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut", // 自然波浪
-            stagger: {
-              each: 0.1, // 順序錯開
-              from: "edges", // 從邊緣開始
-            },
-          },
-          "<"
-        )
+        // .to(
+        //   ".star",
+        //   {
+        //     scale: () => gsap.utils.random(0.8, 1.5),
+        //     rotation: () => gsap.utils.random(-45, 45),
+        //     duration: 1,
+        //     repeat: -1,
+        //     repeatRefresh: true, // 每次重複都重新計算函式
+        //     ease: "none",
+        //     stagger: {
+        //       each: 1,
+        //     },
+        //   },
+        //   "<"
+        // )
         .from(
           ".text-scroll-down",
           {
@@ -151,42 +147,24 @@ function App() {
     { scope: appRef }
   )
 
-  // star track hook
-  useGSAP(
-    () => {
-      gsap.to(".stars", {
-        y: "100vh",
-        scrollTrigger: {
-          trigger: document.body,
-          scrub: 1.5,
-          start: "top top",
-          end: "bottom bottom",
-          // onUpdate(self) {},
-        },
-      })
-    },
-    { scope: appRef }
-  )
-
   return (
     <div id="app" ref={appRef}>
       <Header className="header fixed z-10 h-(--header-height) w-full" />
+
+      {/* <div className="h-[79.4px] w-60">
+        <DotLottieReact src={starAnimation} loop autoplay />
+      </div> */}
       <main>
         <div className="container mx-auto flex flex-col">
-          <HeroSection className="h-screen" />
-          <div className="z-10 flex h-screen overflow-x-auto">
+          <HeroSection className="h-screen w-full" />
+          <div className="z-10 flex h-screen overflow-hidden">
             <AboutSection />
             <ExperienceSection />
             <ProjectSection />
           </div>
         </div>
       </main>
-      <div className="stars absolute top-0 h-full w-full">
-        <StarSvg1 className="star bg-item absolute top-[63.05%] left-[5%] h-39.75 w-43.5" />
-        <StarSvg2 className="star bg-item absolute top-[13%] left-[18.5%] h-29.5 w-34.75" />
-        <StarSvg3 className="star bg-item absolute top-[63.45%] left-[55%] h-17.5 w-24.25" />
-        <StarSvg4 className="star bg-item absolute top-[18.4%] right-[11%] h-45.75 w-48" />
-      </div>
+      <StarBackground />
     </div>
   )
 }

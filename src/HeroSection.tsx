@@ -10,7 +10,7 @@ export function HeroSection({ className }: HeroSectionProps) {
   const mcSvgRef = useRef<SVGSVGElement>(null)
 
   return (
-    <section className={clsx("relative w-416 shrink-0", className)}>
+    <section className={clsx("relative shrink-0", className)}>
       <div className="absolute top-1/2 left-1/2 w-full max-w-295.75 -translate-1/2 text-center">
         <p className="paragraph-1 text-[120px] tracking-[5%]"></p>
         <p className="paragraph-2 text-[120px] tracking-[5%]"></p>

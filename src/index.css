@@ -1,1 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap");
+
 @import "tailwindcss";
+
+@theme {
+  /* customize breakpoints: */
+  /* --breakpoint-2xl: 90rem; */
+  --breakpoint-2xl: 104rem;
+}
+
+/* 定義變數 */
+:root {
+  --header-height: 5rem;
+  --main-height: calc(100vh - 5rem);
+}
+
+body {
+  background-color: #282a36;
+  color: #fff;
+  font-family: "Pixelify Sans";
+}

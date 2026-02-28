@@ -1,4 +1,4 @@
-import { type Config } from "prettier";
+import { type Config } from "prettier"
 
 const config: Config = {
   printWidth: 80,
@@ -14,7 +14,10 @@ const config: Config = {
   bracketSameLine: false, // JSX 的 > 不跟最後一個 prop 同行
 
   arrowParens: "always", // 單一參數也加括號
-  endOfLine: "lf", // 統一使用 LF 換行
-};
+  endOfLine: "lf", // 統一使用 LF 換行,
 
-export default config;
+  plugins: ["prettier-plugin-tailwindcss"],
+  tailwindFunctions: ["clsx"],
+}
+
+export default config

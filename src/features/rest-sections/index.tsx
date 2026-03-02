@@ -45,9 +45,13 @@ export function RestSections({ containerWidth }: RestSectionsProps) {
               <p>efkpofqmrfgremg</p>
             </div>
           </div>
-          <img className="h-56 w-35.75" src={mcSrc} alt="mainChar" />
+          <img className="about-mc h-56 w-35.75" src={mcSrc} alt="mainChar" />
         </div>
-        <img className="h-[767.5px] w-[863.5px]" src={houseSrc} alt="house" />
+        <img
+          className="house h-[767.5px] w-[863.5px]"
+          src={houseSrc}
+          alt="house"
+        />
       </section>
 
       <section id="experience" className="mr-29.25 flex">

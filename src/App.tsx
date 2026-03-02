@@ -28,6 +28,7 @@ function App() {
 
   const { width: containerWidth } =
     useResizeObserver<HTMLDivElement>(containerRef)
+
   useHeroTimeLine(appRef)
 
   // pin
@@ -44,6 +45,9 @@ function App() {
         ".sections-container"
       ) as HTMLElement
 
+      const mcEl = document.querySelector(".about-mc") as HTMLElement
+      const houseEl = document.querySelector(".house") as HTMLElement
+
       if (!wrapper || !container || !tailwindContainer) return
 
       // 定義一個內部函式，專門用來抓取最新的距離
@@ -53,22 +57,40 @@ function App() {
         return dist <= 0 ? 0 : dist
       }
 
-      ScrollTrigger.create({
-        id: "sectionScroll",
-        markers: true,
-        trigger: wrapper,
-        start: "top top",
-        end: () => `+=${getDistance()}`,
-        scrub: true,
-        pin: true,
-        invalidateOnRefresh: true, // <--- 關鍵！這會讓 GSAP 在 resize 時重新計算
-        onUpdate(self) {
-          console.log(self.progress, "pin")
+      const scrollTween = gsap.to(container, {
+        x: () => -getDistance(),
+        ease: "none",
+        scrollTrigger: {
+          id: "sectionScroll",
+          // markers: true,
+          trigger: wrapper,
+          start: "top top",
+          end: () => `+=${getDistance()}`,
+          scrub: true,
+          pin: true,
+          invalidateOnRefresh: true, // <--- 關鍵！這會讓 GSAP 在 resize 時重新計算
+          onUpdate(self) {
+            // console.log(self.progress, "pin")
+          },
         },
-        animation: gsap.to(container, {
-          x: () => -getDistance(),
-          ease: "none",
-        }),
+      })
+
+      gsap.to(".about-mc", {
+        x: () => {
+          return houseEl.offsetLeft + houseEl.offsetWidth / 2 + 20
+        },
+        ease: "none",
+        scrollTrigger: {
+          markers: true,
+          trigger: wrapper,
+          start: "top top",
+          end: () => `+=${houseEl.offsetLeft + houseEl.offsetWidth / 2 + 20}`,
+          scrub: 0.01,
+          id: "about-mc",
+          onUpdate(self) {
+            console.log("about-mc progress: ", self.progress)
+          },
+        },
       })
     },
     { scope: appRef }

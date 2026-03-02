@@ -1,6 +1,6 @@
+import MCSvg from "@/assets/mc.svg?react" // Vite
 import clsx from "clsx"
 import { useRef } from "react"
-import MCSvg from "./assets/mc.svg?react" // Vite
 
 type HeroSectionProps = {
   className?: string

@@ -12,10 +12,11 @@
 :root {
   --header-height: 5rem;
   --main-height: calc(100vh - 5rem);
+  --bg-color: #282a36;
 }
 
 body {
-  background-color: #282a36;
+  background-color: var(--bg-color);
   color: #fff;
   font-family: "Pixelify Sans";
 }

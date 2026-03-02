@@ -1,0 +1,37 @@
+@reference "tailwindcss";
+
+.sections-container__inner {
+  background-image: url("@/assets/ground.svg");
+  background-repeat: repeat-x;
+  background-position-y: bottom;
+}
+
+.about {
+  @apply mr-39 flex h-full items-end justify-between gap-30.75;
+}
+
+.dialog-box {
+  background-image: url("@/assets/dialog-box-bg.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  @apply h-142.5 w-153.5 px-12 py-8;
+}
+
+.dialog-box__title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 1.6px;
+
+  margin-bottom: 14px;
+}
+
+.dialog-box__content {
+  line-height: 1.5;
+  letter-spacing: 0.8px;
+}
+
+.dialog-box__content:first-of-type {
+  margin-bottom: 28px;
+}

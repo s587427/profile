@@ -1,0 +1,20 @@
+@reference "tailwindcss";
+
+.experience-signboard {
+  @apply h-153.75 w-135.75 px-12 pt-8 pb-38;
+  background-image: url("@/assets/bulletin-board-bg.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.experience-signboard__title {
+  @apply mb-3.5 text-[32px] leading-12 font-bold tracking-[1.6px];
+}
+
+.experience-signboard__content {
+  @apply leading-6 tracking-[0.8px];
+}
+
+.experience-signboard__content:first-of-type {
+  @apply mb-7;
+}

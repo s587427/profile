@@ -16,15 +16,18 @@ export function StarBackground() {
       y: "100vh",
       scrollTrigger: {
         trigger: document.body,
-        scrub: 1.5,
+        scrub: 1,
         start: "top top",
-        end: "bottom bottom",
-        // onUpdate(self) {},
+        end: () => `+=${window.innerHeight}`,
+        endTrigger: ".hero",
+        onUpdate(self) {
+          // console.log(self.progress)
+        },
       },
     })
   })
   return (
-    <div ref={starsRef} className="stars absolute top-0 h-full w-full">
+    <div ref={starsRef} className="stars absolute top-0 -z-10 h-full w-full">
       <StarSvg1 className="star bg-item absolute top-[63.05%] left-[5%] h-39.75 w-43.5" />
       <StarSvg2 className="star bg-item absolute top-[13%] left-[18.5%] h-29.5 w-34.75" />
       <StarSvg3 className="star bg-item absolute top-[63.45%] left-[55%] h-17.5 w-24.25" />
@@ -34,8 +37,3 @@ export function StarBackground() {
 }
 
 // quickTo, // quickSet
-// <STAR
-//           key={index}
-//           className="star"
-//           style={{ "--delay": -${index * 0.18}s } as React.CSSProperties}
-//         />

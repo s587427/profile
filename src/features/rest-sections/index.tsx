@@ -24,10 +24,11 @@ export function RestSections({ containerWidth }: RestSectionsProps) {
   }, [])
 
   return (
-    <div className="sections-container__inner relative mb-[18.5%] flex shrink-0 items-end">
+    // mb-[18.5%]
+    <div className="sections-container__inner relative flex shrink-0 items-end">
       <section
         id="about"
-        className="about"
+        className="about relative"
         style={{
           paddingLeft: `${aboutPaddingLeft}px`,
         }}
@@ -52,6 +53,8 @@ export function RestSections({ containerWidth }: RestSectionsProps) {
           src={houseSrc}
           alt="house"
         />
+        {/* test 發光 */}
+        <div className="light-window absolute right-[431.75px] bottom-25 size-25" />
       </section>
 
       <section id="experience" className="mr-29.25 flex">
@@ -66,7 +69,7 @@ export function RestSections({ containerWidth }: RestSectionsProps) {
         ))}
       </section>
 
-      <section className="relative w-118.25 pl-24.5">
+      <section className="svgs relative w-118.25 pl-24.5">
         <img className="h-[207.853px] w-[118.111px]" src={catSrc} alt="cat" />
         <img
           className="absolute right-6.25 bottom-[222.64px] h-[465.365px] w-49.75"

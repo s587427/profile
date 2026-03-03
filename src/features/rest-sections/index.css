@@ -1,9 +1,9 @@
 @reference "tailwindcss";
 
 .sections-container__inner {
-  background-image: url("@/assets/ground.svg");
-  background-repeat: repeat-x;
-  background-position-y: bottom;
+  /* background-image: url("@/assets/ground.svg"); */
+  /* background-repeat: repeat-x; */
+  /* background-position-y: bottom; */
 }
 
 .about {

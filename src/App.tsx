@@ -34,9 +34,7 @@ function App() {
   // pin
   useGSAP(
     () => {
-      const tailwindContainer = appRef.current?.querySelector(
-        ".container"
-      ) as HTMLElement
+      const rootElement = appRef.current?.querySelector("main") as HTMLElement
 
       const wrapper = appRef.current?.querySelector(
         ".sections-wrapper"
@@ -45,25 +43,30 @@ function App() {
         ".sections-container"
       ) as HTMLElement
 
-      const mcEl = document.querySelector(".about-mc") as HTMLElement
-      const houseEl = document.querySelector(".house") as HTMLElement
-
-      if (!wrapper || !container || !tailwindContainer) return
+      const aboutElement = document.querySelector(".about") as HTMLElement
+      const mcElement = document.querySelector(".about-mc") as HTMLElement
+      const houseElement = document.querySelector(".house") as HTMLElement
+      const lightWindowElement = document.querySelector(
+        ".light-window"
+      ) as HTMLElement
+      if (!wrapper || !container || !rootElement) return
 
       // 定義一個內部函式，專門用來抓取最新的距離
       const getDistance = () => {
-        const dist = wrapper.scrollWidth - tailwindContainer.offsetWidth
+        const dist =
+          wrapper.scrollWidth -
+          rootElement.offsetWidth +
+          parseFloat(getComputedStyle(aboutElement).paddingLeft)
         console.log({ dist })
+
         return dist <= 0 ? 0 : dist
       }
 
-      const scrollTween = gsap.to(container, {
-        x: () => -getDistance(),
-        ease: "none",
+      const tl = gsap.timeline({
         scrollTrigger: {
           id: "sectionScroll",
-          // markers: true,
           trigger: wrapper,
+          // markers: true,
           start: "top top",
           end: () => `+=${getDistance()}`,
           scrub: true,
@@ -72,25 +75,43 @@ function App() {
           onUpdate(self) {
             // console.log(self.progress, "pin")
           },
+          refreshPriority: 1, //  確保 Pin 的 ScrollTrigger 優先級高於 Footer
         },
       })
 
-      gsap.to(".about-mc", {
+      tl.to(container, {
         x: () => {
-          return houseEl.offsetLeft + houseEl.offsetWidth / 2 + 20
+          return (
+            -1 *
+            (houseElement.offsetLeft -
+              window.innerWidth / 2 +
+              houseElement.offsetWidth / 2)
+          )
         },
-        ease: "none",
-        scrollTrigger: {
-          markers: true,
-          trigger: wrapper,
-          start: "top top",
-          end: () => `+=${houseEl.offsetLeft + houseEl.offsetWidth / 2 + 20}`,
-          scrub: 0.01,
-          id: "about-mc",
-          onUpdate(self) {
-            console.log("about-mc progress: ", self.progress)
-          },
+      })
+      tl.to(
+        mcElement,
+        {
+          x: () =>
+            houseElement.offsetLeft -
+            mcElement.offsetLeft -
+            -(houseElement.offsetWidth / 2),
         },
+        ">-=0.1"
+      )
+      tl.to(mcElement, {
+        alpha: 0,
+        duration: 0.2,
+      })
+
+      tl.to(lightWindowElement, {
+        background: "yellow",
+        duration: 0.1,
+      })
+
+      tl.to(container, {
+        x: () => -getDistance(),
+        duration: 1,
       })
     },
     { scope: appRef }
@@ -100,14 +121,17 @@ function App() {
     <div id="app" ref={appRef}>
       <Header className="header fixed z-10 h-(--header-height) w-full" />
 
-      <main>
-        <div ref={containerRef} className="container mx-auto">
-          <HeroSection className="hero h-screen w-full" />
-          <div className="sections-wrapper relative h-screen w-full overflow-hidden">
-            <div className="sections-container relative flex h-full">
-              <RestSections containerWidth={containerWidth} />
-            </div>
+      <main ref={containerRef}>
+        <HeroSection className="hero h-screen w-full" />
+        <div className="sections-wrapper relative h-screen w-full overflow-hidden">
+          <div className="sections-container relative bottom-[18.5%] flex h-full">
+            <RestSections containerWidth={containerWidth} />
           </div>
+          {/* <img
+            className="absolute bottom-[18.5%] left-0 h-4 w-full"
+            src={groundSrc}
+          /> */}
+          <div className="bg-white-ground absolute bottom-[18.2%] left-0 h-3 w-full" />
         </div>
       </main>
 

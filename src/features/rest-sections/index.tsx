@@ -6,6 +6,8 @@ import treeSrc from "@/assets/tree.svg"
 import { ExperienceSignBoard } from "@/components/ExperienceSignBoard"
 import { ProjectSignBoard } from "@/components/ProjectSignBoard"
 import { experiences, projects } from "@/data"
+import { useGSAP } from "@gsap/react"
+import gsap from "gsap"
 import { useLayoutEffect, useRef, useState } from "react"
 import "./index.css"
 
@@ -18,13 +20,61 @@ export function RestSections({ containerWidth }: RestSectionsProps) {
   const dialogBoxRef = useRef<HTMLDivElement | null>(null)
   const aboutPaddingLeft = containerWidth / 2 - dialogBoxWidth / 2
 
+  //typewriter effect
+  useGSAP(
+    () => {
+      const pElements = gsap.utils.toArray("p") as HTMLElement[]
+
+      if (pElements.length > 0) {
+        const tl = gsap.timeline({
+          delay: 0.3,
+          scrollTrigger: {
+            trigger: dialogBoxRef.current,
+            start: "top bottom",
+            // * `play`：播放。
+            // * `pause`：暫停。
+            // * `resume`：恢復播放。
+            // * `reverse`：反向播放（倒帶）。
+            // * `restart`：重新開始。
+            // * `reset`：重設回初始狀態（但不播）。
+            // * `complete`：直接跳到動畫結束。
+            toggleActions: "play none none none", // onEnter onLeave onEnterBack onLeaveBack
+          },
+          onComplete: () => {
+            // console.log("打字效果全部播完了！")
+          },
+        })
+
+        tl.from("h2", {
+          text: "", // 從空字串開始
+          ease: "none",
+        })
+
+        pElements.forEach((p) => {
+          // 先獲取文字並存在變數中，確保不會因為重新渲染丟失
+          const originalText = p.innerText
+          // console.log("originalText.length: ", originalText.length)
+          tl.from(
+            p,
+            {
+              duration: Math.max(0.5, originalText.length * 0.05), // 動態時間
+              text: "", // 從空字串開始
+              ease: "none",
+            },
+            "+=0" // 每個段落之間間隔{x}s
+          )
+        })
+      }
+    },
+    { scope: dialogBoxRef }
+  )
+
   useLayoutEffect(() => {
     if (dialogBoxRef.current)
       setDialogBoxWidth(dialogBoxRef.current.offsetWidth)
   }, [])
 
   return (
-    // mb-[18.5%]
     <div className="sections-container__inner relative flex shrink-0 items-end">
       <section
         id="about"
@@ -72,7 +122,7 @@ export function RestSections({ containerWidth }: RestSectionsProps) {
       <section className="svgs relative w-118.25 pl-24.5">
         <img className="h-[207.853px] w-[118.111px]" src={catSrc} alt="cat" />
         <img
-          className="absolute right-6.25 bottom-[222.64px] h-[465.365px] w-49.75"
+          className="img-ballon absolute right-6.25 bottom-[222.64px] h-[465.365px] w-49.75"
           src={ballonSrc}
           alt="ballon"
         />

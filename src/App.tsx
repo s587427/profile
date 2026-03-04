@@ -35,29 +35,36 @@ function App() {
   useGSAP(
     () => {
       const rootElement = appRef.current?.querySelector("main") as HTMLElement
-
       const wrapper = appRef.current?.querySelector(
         ".sections-wrapper"
       ) as HTMLElement
       const container = appRef.current?.querySelector(
         ".sections-container"
       ) as HTMLElement
-
-      const aboutElement = document.querySelector(".about") as HTMLElement
-      const mcElement = document.querySelector(".about-mc") as HTMLElement
-      const houseElement = document.querySelector(".house") as HTMLElement
-      const lightWindowElement = document.querySelector(
+      const mcElement = appRef.current?.querySelector(
+        ".about-mc"
+      ) as HTMLElement
+      const houseElement = appRef.current?.querySelector(
+        ".house"
+      ) as HTMLElement
+      const lightWindowElement = appRef.current?.querySelector(
         ".light-window"
       ) as HTMLElement
-      if (!wrapper || !container || !rootElement) return
+
+      if (
+        !wrapper ||
+        !container ||
+        !rootElement ||
+        !mcElement ||
+        !houseElement ||
+        !lightWindowElement
+      )
+        return
 
       // 定義一個內部函式，專門用來抓取最新的距離
       const getDistance = () => {
-        const dist =
-          wrapper.scrollWidth -
-          rootElement.offsetWidth +
-          parseFloat(getComputedStyle(aboutElement).paddingLeft)
-        console.log({ dist })
+        // ? Scrollable Overflow
+        const dist = container.scrollWidth - rootElement.offsetWidth
 
         return dist <= 0 ? 0 : dist
       }
@@ -97,7 +104,7 @@ function App() {
             mcElement.offsetLeft -
             -(houseElement.offsetWidth / 2),
         },
-        ">-=0.1"
+        ">-=0.5"
       )
       tl.to(mcElement, {
         alpha: 0,
@@ -127,10 +134,6 @@ function App() {
           <div className="sections-container relative bottom-[18.5%] flex h-full">
             <RestSections containerWidth={containerWidth} />
           </div>
-          {/* <img
-            className="absolute bottom-[18.5%] left-0 h-4 w-full"
-            src={groundSrc}
-          /> */}
           <div className="bg-white-ground absolute bottom-[18.2%] left-0 h-3 w-full" />
         </div>
       </main>

@@ -4,29 +4,21 @@ import "./index.css"
 type ExperienceSignBoardProps = {
   className?: string
   title: string
-  mainContents: string[]
-  secondaryContents: string[]
+  contentHTML: string
 }
 
 export function ExperienceSignBoard({
   className,
   title,
-  mainContents = [],
-  secondaryContents = [],
+  contentHTML,
 }: ExperienceSignBoardProps) {
   return (
     <div className={clsx("experience-signboard", className)}>
       <h2 className="experience-signboard__title">{title}</h2>
-      <div className="experience-signboard__content">
-        {mainContents.map((content, index) => (
-          <p key={index}>{content}</p>
-        ))}
-      </div>
-      <div className="experience-signboard__content">
-        {secondaryContents.map((content, index) => (
-          <p key={index}>{content}</p>
-        ))}
-      </div>
+      <div
+        className="experience-signboard__content"
+        dangerouslySetInnerHTML={{ __html: contentHTML }}
+      ></div>
     </div>
   )
 }

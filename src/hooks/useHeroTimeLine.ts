@@ -17,10 +17,11 @@ export function useHeroTimeLine(ref: React.RefObject<HTMLDivElement | null>) {
 
       t1.to(".paragraph-1", {
         text: "Thinking Deeply",
+        duration: 1,
         ease: "none",
       })
         .to(".paragraph-2", {
-          duration: 0.8,
+          duration: 1,
           text: "Executing Clearly.",
           ease: "none",
         })

@@ -5,7 +5,7 @@ import mcSrc from "@/assets/mc2.svg"
 import treeSrc from "@/assets/tree.svg"
 import { ExperienceSignBoard } from "@/components/ExperienceSignBoard"
 import { ProjectSignBoard } from "@/components/ProjectSignBoard"
-import { experiences, projects } from "@/data"
+import { aboutHTML, experiences, projects } from "@/data"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { useLayoutEffect, useRef, useState } from "react"
@@ -86,15 +86,10 @@ export function RestSections({ containerWidth }: RestSectionsProps) {
         <div className="flex flex-col">
           <div className="dialog-box" ref={dialogBoxRef}>
             <h2 className="dialog-box__title">Who is Ethan?</h2>
-            <div className="dialog-box__content">
-              <p>eifhrkjclkdjfl</p>
-              <p>jkfjdfkdskfpjeoi</p>
-              <p>ojckjmlc lkflkewpofjweqoi</p>
-            </div>
-            <div className="dialog-box__content">
-              <p>rkrokfpoq</p>
-              <p>efkpofqmrfgremg</p>
-            </div>
+            <div
+              className="dialog-box__content"
+              dangerouslySetInnerHTML={{ __html: aboutHTML }}
+            ></div>
           </div>
           <img className="about-mc h-56 w-35.75" src={mcSrc} alt="mainChar" />
         </div>
@@ -104,11 +99,13 @@ export function RestSections({ containerWidth }: RestSectionsProps) {
           alt="house"
         />
         {/* test 發光 */}
-        <div className="light-window absolute right-[431.75px] bottom-25 size-25" />
+        <div className="light-window absolute right-[431.75px] bottom-25 size-25 opacity-0" />
       </section>
 
-      <section id="experience" className="mr-29.25 flex">
-        <ExperienceSignBoard {...experiences[0]} />
+      <section id="experience" className="mr-29.25 flex gap-x-13.5">
+        {experiences.map((experience, index) => (
+          <ExperienceSignBoard key={index} {...experience} />
+        ))}
       </section>
 
       <img src={treeSrc} alt="tree" className="mr-16.75 h-196.75 w-131.75" />

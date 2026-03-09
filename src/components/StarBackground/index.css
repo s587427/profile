@@ -1,11 +1,11 @@
-.stars .star:nth-child(1) {
+.stars .star-wrapper:nth-child(1) .star {
   animation-delay: -0.18s;
 }
 
-.stars .star:nth-child(2) {
+.stars .star-wrapper:nth-child(2) .star {
   animation-delay: -0.36s;
 }
-.stars .star:nth-child(3) {
+.stars .star-wrapper:nth-child(3) .star {
   animation-delay: -0.54s;
 }
 

@@ -1,6 +1,8 @@
 import ballonSrc from "@/assets/ballon.svg"
+import streetlightSrc from "@/assets/streetlight.svg"
 import catSrc from "@/assets/cat.svg"
 import houseSrc from "@/assets/house.svg"
+import houseLightSrc from "@/assets/house-light.svg"
 import mcSrc from "@/assets/mc2.svg"
 import treeSrc from "@/assets/tree.svg"
 import { ExperienceSignBoard } from "@/components/ExperienceSignBoard"
@@ -38,7 +40,7 @@ export function RestSections({ containerWidth }: RestSectionsProps) {
             // * `restart`：重新開始。
             // * `reset`：重設回初始狀態（但不播）。
             // * `complete`：直接跳到動畫結束。
-            toggleActions: "play none none none", // onEnter onLeave onEnterBack onLeaveBack
+            toggleActions: "play reverse play reverse", // onEnter onLeave onEnterBack onLeaveBack
           },
           onComplete: () => {
             // console.log("打字效果全部播完了！")
@@ -83,7 +85,12 @@ export function RestSections({ containerWidth }: RestSectionsProps) {
           paddingLeft: `${aboutPaddingLeft}px`,
         }}
       >
-        <div className="flex flex-col">
+        <img
+          className="streetlight absolute bottom-0 -left-40 h-[767.5px] w-[863.5px]"
+          src={streetlightSrc}
+          alt="streetlight"
+        />
+        <div className="z-10 flex flex-col">
           <div className="dialog-box" ref={dialogBoxRef}>
             <h2 className="dialog-box__title">Who is Ethan?</h2>
             <div
@@ -93,13 +100,18 @@ export function RestSections({ containerWidth }: RestSectionsProps) {
           </div>
           <img className="about-mc h-56 w-35.75" src={mcSrc} alt="mainChar" />
         </div>
-        <img
-          className="house h-[767.5px] w-[863.5px]"
-          src={houseSrc}
-          alt="house"
-        />
-        {/* test 發光 */}
-        <div className="light-window absolute right-[431.75px] bottom-25 size-25 opacity-0" />
+        <div className="house relative h-[767.5px] w-[863.5px]">
+          <img
+            className="house-dark h-[767.5px] w-[863.5px]"
+            src={houseSrc}
+            alt="house"
+          />
+          <img
+            className="house-light pointer-events-none absolute inset-0 h-[767.5px] w-[863.5px] opacity-0"
+            src={houseLightSrc}
+            alt="house with light"
+          />
+        </div>
       </section>
 
       <section id="experience" className="mr-29.25 flex gap-x-13.5">
@@ -117,7 +129,7 @@ export function RestSections({ containerWidth }: RestSectionsProps) {
       </section>
 
       <section className="svgs relative w-118.25 pl-24.5">
-        <img className="h-[207.853px] w-[118.111px]" src={catSrc} alt="cat" />
+        <img className="h-[147.853px] w-[118.111px]" src={catSrc} alt="cat" />
         <img
           className="img-ballon absolute right-6.25 bottom-[222.64px] h-[465.365px] w-49.75"
           src={ballonSrc}

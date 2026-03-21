@@ -5,6 +5,10 @@ export function useHeroTimeLine(ref: React.RefObject<HTMLDivElement | null>) {
   // time line hook
   useGSAP(
     () => {
+      // Ensure initial state on refresh before timeline starts.
+      gsap.set(".bg-item", { opacity: 0 })
+      gsap.set(".text-scroll-down", { y: 100, opacity: 0 })
+
       // todo time line
       // topic-typewriter effect x
       // header-opacity 1 x
@@ -17,11 +21,11 @@ export function useHeroTimeLine(ref: React.RefObject<HTMLDivElement | null>) {
 
       t1.to(".paragraph-1", {
         text: "Thinking Deeply",
-        duration: 1,
+        duration: 0.8,
         ease: "none",
       })
         .to(".paragraph-2", {
-          duration: 1,
+          duration: 0.8,
           text: "Executing Clearly.",
           ease: "none",
         })
@@ -44,7 +48,7 @@ export function useHeroTimeLine(ref: React.RefObject<HTMLDivElement | null>) {
           },
           "<"
         )
-        .fromTo(".bg-item", { opacity: 0 }, { opacity: 1, duration: 0.3 })
+        .fromTo(".bg-item", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 })
         .addLabel("bgItemOpacityDone")
         .to(
           ".hero-mc",
@@ -95,14 +99,20 @@ export function useHeroTimeLine(ref: React.RefObject<HTMLDivElement | null>) {
         //   },
         //   "<"
         // )
-        .from(
+        .to(
           ".text-scroll-down",
           {
-            y: 100,
-            opacity: 0,
+            y: 0,
+            opacity: 1,
           },
           "bgItemOpacityDone"
         )
+        .to(".line-scroll-down", {
+          scaleY: 1,
+          autoAlpha: 1,
+          duration: 0.6,
+          ease: "power2.out",
+        })
     },
     { scope: ref }
   )
@@ -111,7 +121,9 @@ export function useHeroTimeLine(ref: React.RefObject<HTMLDivElement | null>) {
   useGSAP(
     () => {
       gsap.set(".line-scroll-down", {
-        transformOrigin: "bottom",
+        transformOrigin: "top",
+        autoAlpha: 1,
+        scaleY: 0,
         height: () => {
           const lineScrollDownElement =
             ref.current?.querySelector(".line-scroll-down")
@@ -134,16 +146,28 @@ export function useHeroTimeLine(ref: React.RefObject<HTMLDivElement | null>) {
         },
       })
 
-      gsap.to(".line-scroll-down", {
-        scaleY: 0,
-        scrollTrigger: {
-          trigger: ".dialog-box",
-          start: "top bottom",
-          onUpdate(self) {
-            // console.log("update", self.progress)
-          },
+      gsap.fromTo(
+        ".line-scroll-down",
+        {
+          transformOrigin: "bottom",
+          scaleY: 1,
         },
-      })
+        {
+          transformOrigin: "bottom",
+          scaleY: 0,
+          ease: "none",
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: ".dialog-box",
+            start: "top 70%",
+            end: "top 45%",
+            scrub: true,
+            onUpdate(self) {
+              // console.log("update", self.progress)
+            },
+          },
+        }
+      )
     },
     { scope: ref }
   )

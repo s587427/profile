@@ -14,12 +14,13 @@ export function Footer() {
       },
       {
         opacity: 1,
-        duration: 2,
+        duration: 1.2,
         scrollTrigger: {
           id: "footerRef",
           trigger: footerRef.current,
           start: "top bottom", //  Footer 頂部碰到視窗底部
           end: "bottom bottom", //  Footer 底部碰到視窗底部
+          toggleActions: "play none reverse none",
           // onUpdate(self) {
           //   console.log("footer progress: ", self.progress)
           // },

@@ -1,4 +1,7 @@
 // tree src /f /a > src-tree.txt
+import chatRealtimeImgSrc from "@/assets/chat-realtime-cover.png"
+import habitTrackerImgSrc from "@/assets/habit-tracker-cover.png"
+import todoListImgSrc from "@/assets/todo-list-cover.png"
 export const aboutHTML =
   "<p>畢業於國立勤益科技大學資訊管理系，約有 4～5 年軟體開發經驗，主要專注於前端，也具備全端開發能力。曾使用 Next.js、Vue 開發前後台系統與共用元件庫，並負責 API 串接與功能實作。也參與過 WordPress 與政府專案網站開發，熟悉 React、PHP、MySQL 及 LINE API 串接。喜歡持續學習新技術，打造穩定、好用且體驗良好的產品。</p>"
 
@@ -71,6 +74,7 @@ export const projects: Array<ProjectItemType> = [
       <p>支援建立/加入房間、即時訊息、</p>
       <p>使用者註冊/登入/重設密碼與管理功能。</p>
     `,
+    imgSrc: chatRealtimeImgSrc,
     link: "https://study-realtime-chat-supabase-next.vercel.app/auth/login",
   },
   {
@@ -81,6 +85,7 @@ export const projects: Array<ProjectItemType> = [
       <p>提供習慣連續完成天數（Streak）與完成率統計</p>
       <p>根據使用者習慣完成表現，計算並顯示習慣排名與趨勢分析</p>
     `,
+    imgSrc: habitTrackerImgSrc,
     link: "https://github.com/s587427/expo-course",
   },
   {
@@ -88,6 +93,7 @@ export const projects: Array<ProjectItemType> = [
     contentHTML: `
       <p>使用vue3開發</p>
     `,
+    imgSrc: todoListImgSrc,
     link: "https://s587427.github.io/vue3-todolist/",
   },
 ]

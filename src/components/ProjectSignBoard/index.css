@@ -13,6 +13,7 @@
 
 .project-signboard__img {
   @apply mb-3.5 w-full max-w-full;
+  aspect-ratio: 16/9;
 }
 
 .project-signboard__content {

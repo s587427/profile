@@ -11,83 +11,46 @@ import "./index.css"
 export function StarBackground() {
   const starsRef = useRef<HTMLDivElement | null>(null)
 
-  // star track hook
+  // stars stay fixed, but lag briefly while scrolling
   useGSAP(() => {
     const items = gsap.utils.toArray(".star-wrapper") as HTMLElement[]
+    let lastScroll = window.scrollY
+    const lagDurations = [0.4, 0.58, 0.76, 0.92]
+    const lagStrengths = [0.85, 1.05, 1.25, 1.45]
+    const lagLimits = [80, 100, 120, 140]
 
-    // 為每個星星建立一個「追蹤器」
-    // duration 就是你說的 CSS transition 的延遲時間
-    const trackers = items.map((star, i) => {
-      return gsap.quickTo(star as HTMLElement, "y", {
-        duration: 1.2, // 數值越大，追回原位的「延遲感」越重
-        // ease: "power2.out", // 決定吸附回來的曲線，power2.out 很有磁吸感
+    const lagSetters = items.map((star, i) =>
+      gsap.quickTo(star, "y", {
+        duration: lagDurations[i % lagDurations.length],
+        ease: "none",
       })
-    })
+    )
 
-    // useGSAP 會自動清理內部的 ScrollTrigger 和 delayedCall
-    const stopCheck = gsap
-      .delayedCall(0.4, () => {
-        trackers.forEach((updateY) => updateY(0))
+    const settleBack = gsap
+      .delayedCall(0.08, () => {
+        lagSetters.forEach((setY) => setY(0))
       })
       .pause()
 
-    // 2. 監聽滾動速度
     ScrollTrigger.create({
-      trigger: ".hero",
+      trigger: document.documentElement,
       start: "top top",
-      end: "bottom top",
+      end: "max",
       onUpdate: (self) => {
-        // 獲取當前滾動的瞬時速度
-        const velocity = self.getVelocity()
-        // 每次滾動時都重新計時
-        stopCheck.restart(true)
+        const currentScroll = self.scroll()
+        const delta = currentScroll - lastScroll
+        lastScroll = currentScroll
 
-        trackers.forEach((updateY, i) => {
-          const targetY = velocity * -0.05 * (i + 1) // 目標位移 = 速度 * 係數
-          // 讓追蹤器去「追」這個目標值
-          // 即使滾動停止了，trackers 內建的 duration 也會讓它慢慢追回 0
-          updateY(targetY)
+        lagSetters.forEach((setY, i) => {
+          const strength = lagStrengths[i % lagStrengths.length]
+          const limit = lagLimits[i % lagLimits.length]
+          const lagOffset = gsap.utils.clamp(-limit, limit, delta * strength)
+          setY(lagOffset)
         })
+
+        settleBack.restart(true)
       },
-      onLeave: () => {
-        gsap.to(".stars", { opacity: 0, ease: "power2.inOut" })
-      },
-      onEnterBack: () => {
-        gsap.to(".stars", { opacity: 1, ease: "power2.inOut" })
-      },
-      // hook for resize
-      onRefresh: () => {
-        // console.log("onRefresh")
-      },
-      // hook for resize
-      onRefreshInit: () => {
-        // console.log("onRefreshInit")
-      },
-      // onToggle: () => {},
     })
-
-    // items.forEach((star, i) => {
-    //   // 讓每個星星的「吸附速度」與「移動距離」根據 index 不同
-    //   // 這樣滾動時，星星之間也會有相對速度，視覺深度更強
-    //   // const depth = (i + 1) * 50
-
-    //   gsap.fromTo(
-    //     star as HTMLElement,
-    //     {
-    //       y: -40, // 初始位置（在上方）
-    //     },
-    //     {
-    //       y: 0, // 目標位置（CSS 定義的位置）
-    //       opacity: 0,
-    //       scrollTrigger: {
-    //         trigger: ".hero",
-    //         start: "top top",
-    //         end: "bottom top",
-    //         scrub: 3,
-    //       },
-    //     }
-    //   )
-    // })
   })
 
   return (
@@ -99,7 +62,7 @@ export function StarBackground() {
       <div className="star-wrapper bg-item absolute top-[13%] left-[18.5%]">
         <StarSvg2 className="star h-29.5 w-34.75" />
       </div>
-      <div className="star-wrapper bg-item absolute top-[63.45%] left-[55%]">
+      <div className="star-wrapper bg-item absolute top-[70.45%] left-[68%]">
         <StarSvg3 className="star h-17.5 w-24.25" />
       </div>
       <div className="star-wrapper bg-item absolute top-[18.4%] right-[11%]">
@@ -108,5 +71,3 @@ export function StarBackground() {
     </div>
   )
 }
-
-// quickTo, // quickSet

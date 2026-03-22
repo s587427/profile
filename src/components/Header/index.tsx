@@ -1,7 +1,13 @@
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { DotLottieReact } from "@lottiefiles/dotlottie-react"
+import { useState } from "react"
+import hoverEffect from "@/assets/hover-effect.lottie"
 
 export function Header({ className }: { className: string }) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [playIteration, setPlayIteration] = useState(0)
+
   function navTo(targetSelector: string) {
     const scrollTrigger = ScrollTrigger.getById("sectionScroll")
     const target = document.querySelector(targetSelector) as HTMLElement
@@ -16,25 +22,46 @@ export function Header({ className }: { className: string }) {
     }
   }
 
+  const navItems = [
+    { label: "About", target: "#about", href: "#About" },
+    { label: "Experience", target: "#experience", href: "#Experience" },
+    { label: "Projects", target: "#projects", href: "#Projects" },
+  ]
+
   return (
     <header className={className}>
       <nav className="py-4">
         <ul className="flex justify-center gap-26.75">
-          <li onClick={() => navTo("#about")}>
-            <a className="text-[32px] font-bold" href="#About">
-              About
-            </a>
-          </li>
-          <li onClick={() => navTo("#experience")}>
-            <a className="text-[32px] font-bold" href="#Experience">
-              Experience
-            </a>
-          </li>
-          <li onClick={() => navTo("#projects")}>
-            <a className="text-[32px] font-bold" href="#Projects">
-              Projects
-            </a>
-          </li>
+          {navItems.map((item, index) => (
+            <li
+              className="relative"
+              key={item.label}
+              onClick={() => navTo(item.target)}
+              onMouseEnter={() => {
+                setHoveredIndex(index)
+                setPlayIteration((value) => value + 1)
+              }}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              {hoveredIndex === index && (
+                <div className="pointer-events-none absolute inset-0 scale-170">
+                  <DotLottieReact
+                    autoplay
+                    key={`${item.label}-${playIteration}`}
+                    loop={false}
+                    speed={2}
+                    src={hoverEffect}
+                  />
+                </div>
+              )}
+              <a
+                className="relative z-10 px-8 py-4 text-[32px] font-bold"
+                href={item.href}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
         </ul>
       </nav>
     </header>

@@ -47,8 +47,8 @@ function App() {
       const houseElement = appRef.current?.querySelector(
         ".house"
       ) as HTMLElement
-      const lightWindowElement = appRef.current?.querySelector(
-        ".light-window"
+      const houseLightElement = appRef.current?.querySelector(
+        ".house-light"
       ) as HTMLElement
 
       if (
@@ -57,9 +57,16 @@ function App() {
         !rootElement ||
         !mcElement ||
         !houseElement ||
-        !lightWindowElement
+        !houseLightElement
       )
         return
+
+      const houseLightTween = gsap.to(houseLightElement, {
+        autoAlpha: 1,
+        duration: 0.3,
+        ease: "power1.out",
+        paused: true,
+      })
 
       // 定義一個內部函式，專門用來抓取最新的距離
       const getDistance = () => {
@@ -79,9 +86,6 @@ function App() {
           scrub: true,
           pin: true,
           invalidateOnRefresh: true, // <--- 關鍵！這會讓 GSAP 在 resize 時重新計算
-          onUpdate(self) {
-            // console.log(self.progress, "pin")
-          },
           refreshPriority: 1, //  確保 Pin 的 ScrollTrigger 優先級高於 Footer
         },
       })
@@ -110,15 +114,32 @@ function App() {
         alpha: 0,
         duration: 0.2,
       })
-
-      tl.to(lightWindowElement, {
-        background: "yellow",
-        duration: 0.1,
-      })
+      tl.addLabel("mcInsideHouse")
 
       tl.to(container, {
         x: () => -getDistance(),
         duration: 1,
+      })
+
+      const lightOnProgress = tl.labels.mcInsideHouse / tl.duration()
+      const sectionScrollTrigger = tl.scrollTrigger
+
+      if (!sectionScrollTrigger) return
+
+      ScrollTrigger.create({
+        trigger: wrapper,
+        start: () => {
+          const start = Number(sectionScrollTrigger.start)
+          const end = Number(sectionScrollTrigger.end)
+          return start + (end - start) * lightOnProgress
+        },
+        end: () => {
+          const start = Number(sectionScrollTrigger.start)
+          const end = Number(sectionScrollTrigger.end)
+          return start + (end - start) * lightOnProgress + 1
+        },
+        onEnter: () => houseLightTween.play(),
+        onLeaveBack: () => houseLightTween.reverse(),
       })
     },
     { scope: appRef }
@@ -130,11 +151,11 @@ function App() {
 
       <main ref={containerRef}>
         <HeroSection className="hero h-screen w-full" />
-        <div className="sections-wrapper relative h-screen w-full overflow-hidden">
-          <div className="sections-container relative bottom-[18.5%] flex h-full">
+        <div className="sections-wrapper relative h-screen w-full overflow-hidden p-10">
+          <div className="sections-container relative bottom-0 flex h-full">
             <RestSections containerWidth={containerWidth} />
           </div>
-          <div className="bg-white-ground absolute bottom-[18.2%] left-0 h-3 w-full" />
+          <div className="bg-white-ground absolute left-0 h-3 w-full" />
         </div>
       </main>
 
